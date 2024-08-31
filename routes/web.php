@@ -10,6 +10,9 @@ use App\Models\Day;
 // Rotta per visualizzare il form di creazione di un nuovo viaggio
 Route::get('/trips/create', [TripController::class, 'create'])->name('trips.create');
 
+// Rotta per gestire l'invio del form di creazione di un nuovo viaggio
+Route::post('/trips', [TripController::class, 'store'])->name('trips.store');
+
 // Home Page 
 Route::get('/', function () {
     $trips = Trip::all();
