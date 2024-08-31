@@ -7,11 +7,19 @@ use App\Http\Controllers\TripController;
 use App\Models\Trip;
 use App\Models\Day;
 
-// Rotta per visualizzare il form di creazione di un nuovo viaggio
+// form di creazione di un nuovo viaggio
 Route::get('/trips/create', [TripController::class, 'create'])->name('trips.create');
-
-// Rotta per gestire l'invio del form di creazione di un nuovo viaggio
+// invio del form di creazione di un nuovo viaggio
 Route::post('/trips', [TripController::class, 'store'])->name('trips.store');
+
+// aggiungere giornate di viaggio
+Route::get('/trips/{id}/days/create', [App\Http\Controllers\DayController::class, 'create'])->name('days.create');
+Route::post('/trips/{id}/days', [App\Http\Controllers\DayController::class, 'store'])->name('days.store');
+
+// aggiungi tappa viaggio
+Route::get('/days/{id}/stops/create', [App\Http\Controllers\StopController::class, 'create'])->name('stops.create');
+Route::post('/days/{id}/stops', [App\Http\Controllers\StopController::class, 'store'])->name('stops.store');
+
 
 // Home Page 
 Route::get('/', function () {
