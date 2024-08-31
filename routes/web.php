@@ -3,28 +3,27 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TripController;
+use App\Models\Trip;
+use App\Models\Day;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Rotta per visualizzare il form di creazione di un nuovo viaggio
+Route::get('/trips/create', [TripController::class, 'create'])->name('trips.create');
 
+// Home Page 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $trips = Trip::all();
+    return view('home', ['trips' => $trips]);
+})->name('home');
 
+// Pagina Dettagli Viaggio 
+Route::get('/trips/{id}', function ($id) {
+    $trip = Trip::with('days')->findOrFail($id);
+    return view('trips.show', ['trip' => $trip]);
+})->name('trips.show');
 
-Route::middleware('auth')
-->prefix('admin') //prefisso url gruppo
-->name('admin.') //inizio di ogni nome delle rotte del grupp
-->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-});
-
-require __DIR__.'/auth.php';
+// Pagina Dettagli Giornata 
+Route::get('/days/{id}', function ($id) {
+    $day = Day::with('stops')->findOrFail($id);
+    return view('days.show', ['day' => $day]);
+})->name('days.show');
